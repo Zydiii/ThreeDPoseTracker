@@ -238,7 +238,7 @@ namespace UniGLTF
         /// <param name="bytes"></param>
         public void ParseGlb(Byte[] bytes)
         {
-            var chunks = glbImporter.ParseGlbChunks(bytes);
+            var chunks = glbImporter.ParseGlbChanks(bytes);
 
             if (chunks.Count != 2)
             {
@@ -255,41 +255,23 @@ namespace UniGLTF
                 throw new Exception("chunk 1 is not BIN");
             }
 
-            try
-            {
-                var jsonBytes = chunks[0].Bytes;
-                ParseJson(Encoding.UTF8.GetString(jsonBytes.Array, jsonBytes.Offset, jsonBytes.Count),
-                    new SimpleStorage(chunks[1].Bytes));
-            }
-            catch(StackOverflowException ex)
-            {
-                throw new Exception("[UniVRM Import Error] json parsing failed, nesting is too deep.\n" + ex);
-            }
-            catch
-            {
-                throw;
-            }
+            var jsonBytes = chunks[0].Bytes;
+            ParseJson(Encoding.UTF8.GetString(jsonBytes.Array, jsonBytes.Offset, jsonBytes.Count),
+                new SimpleStorage(chunks[1].Bytes));
         }
 
-        private SerializerTypes _serializerType = SerializerTypes.UniJSON;
-        public SerializerTypes SerializerType { get { return _serializerType; } set { _serializerType = value; } }
-
+        public bool UseUniJSONParser;
         public virtual void ParseJson(string json, IStorage storage)
         {
             Json = json;
             Storage = storage;
 
-            if (_serializerType == SerializerTypes.UniJSON)
+            if (UseUniJSONParser)
             {
                 Json.ParseAsJson().Deserialize(ref GLTF);
             }
-            else if (_serializerType == SerializerTypes.Generated)
+            else
             {
-                GLTF = GltfDeserializer.Deserialize(json.ParseAsJson());
-            }
-            else if (_serializerType == SerializerTypes.JsonSerializable)
-            {
-                // Obsolete
                 GLTF = JsonUtility.FromJson<glTF>(Json);
             }
 
@@ -632,13 +614,13 @@ namespace UniGLTF
             {
                 if (GLTF.materials == null || !GLTF.materials.Any())
                 {
-                    AddMaterial(MaterialImporter.CreateMaterial(0, null, false));
+                    AddMaterial(MaterialImporter.CreateMaterial(0, null));
                 }
                 else
                 {
                     for (int i = 0; i < GLTF.materials.Count; ++i)
                     {
-                        AddMaterial(MaterialImporter.CreateMaterial(i, GLTF.materials[i], GLTF.MaterialHasVertexColor(i)));
+                        AddMaterial(MaterialImporter.CreateMaterial(i, GLTF.materials[i]));
                     }
                 }
             }
@@ -667,9 +649,9 @@ namespace UniGLTF
         {
             using (MeasureTime("LoadNodes"))
             {
-                for (int i = 0; i < GLTF.nodes.Count; i++)
+                foreach (var x in GLTF.nodes)
                 {
-                    Nodes.Add(NodeImporter.ImportNode(GLTF.nodes[i], i).transform);
+                    Nodes.Add(NodeImporter.ImportNode(x).transform);
                 }
             }
 
@@ -905,26 +887,17 @@ namespace UniGLTF
                 }
             }
 
-            // Create or update Main Asset
+            // Create or upate Main Asset
             if (prefabPath.IsFileExists)
             {
                 Debug.LogFormat("replace prefab: {0}", prefabPath);
                 var prefab = prefabPath.LoadAsset<GameObject>();
-#if UNITY_2018_3_OR_NEWER
-                PrefabUtility.SaveAsPrefabAssetAndConnect(Root, prefabPath.Value, InteractionMode.AutomatedAction);
-#else
                 PrefabUtility.ReplacePrefab(Root, prefab, ReplacePrefabOptions.ReplaceNameBased);
-#endif
-
             }
             else
             {
                 Debug.LogFormat("create prefab: {0}", prefabPath);
-#if UNITY_2018_3_OR_NEWER
-                PrefabUtility.SaveAsPrefabAssetAndConnect(Root, prefabPath.Value, InteractionMode.AutomatedAction);
-#else
                 PrefabUtility.CreatePrefab(prefabPath.Value, Root);
-#endif
             }
             foreach (var x in paths)
             {
@@ -932,17 +905,11 @@ namespace UniGLTF
             }
         }
 
-        [Obsolete("Use ExtractImages(prefabPath)")]
-        public void ExtranctImages(UnityPath prefabPath)
-        {
-            ExtractImages(prefabPath);
-        }
-
         /// <summary>
         /// Extract images from glb or gltf out of Assets folder.
         /// </summary>
         /// <param name="prefabPath"></param>
-        public void ExtractImages(UnityPath prefabPath)
+        public void ExtranctImages(UnityPath prefabPath)
         {
             var prefabParentDir = prefabPath.Parent;
 
@@ -1045,7 +1012,7 @@ namespace UniGLTF
         }
 
         /// <summary>
-        /// Destroy assets that created ImporterContext. This function is clean up for importer error.
+        /// Destroy assets that created ImporterContext. This function is clean up for imoprter error.
         /// </summary>
         public void EditorDestroyRootAndAssets()
         {

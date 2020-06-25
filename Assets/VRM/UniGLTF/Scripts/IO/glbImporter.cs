@@ -27,13 +27,7 @@ namespace UniGLTF
             }
         }
 
-        [Obsolete("Use ParseGlbChunks(bytes)")]
         public static List<GlbChunk> ParseGlbChanks(Byte[] bytes)
-        {
-            return ParseGlbChunks(bytes);
-        }
-
-        public static List<GlbChunk> ParseGlbChunks(Byte[] bytes)
         {
             if (bytes.Length == 0)
             {

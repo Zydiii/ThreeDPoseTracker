@@ -286,13 +286,7 @@ namespace UniGLTF
         }
         #endregion
 
-        [Obsolete("Use TraverseDir()")]
         public IEnumerable<UnityPath> TravserseDir()
-        {
-            return TraverseDir();
-        }
-
-        public IEnumerable<UnityPath> TraverseDir()
         {
             if (IsDirectoryExists)
             {
@@ -300,7 +294,7 @@ namespace UniGLTF
 
                 foreach(var child in ChildDirs)
                 {
-                    foreach(var x in child.TraverseDir())
+                    foreach(var x in child.TravserseDir())
                     {
                         yield return x;
                     }

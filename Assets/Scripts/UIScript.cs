@@ -39,7 +39,7 @@ public class UIScript : MonoBehaviour
     public Texture BackgroundTexture;
     public Camera Maincamera;
 
-    private string AppVer = "0.14";
+    private string AppVer = "0.13";
     private int ConfigColums = 21;
 
     public MessageBoxScript message;
@@ -232,8 +232,8 @@ public class UIScript : MonoBehaviour
             var setting = new AvatarSetting()
             {
                 AvatarType = -1,
-                AvatarName = "—–—é‚è‚ã‚ñ (Lune)",
-                Avatar = GameObject.Find("Lune").GetComponent<VNectModel>(),
+                AvatarName = "unity-chan",
+                Avatar = GameObject.Find("unitychan").GetComponent<VNectModel>(),
             };
             setting.Avatar.SetNose(setting.FaceOriX, setting.FaceOriY, setting.FaceOriZ);
             AvatarList.Add(setting);
@@ -265,7 +265,7 @@ public class UIScript : MonoBehaviour
                 switch (setting.AvatarType)
                 {
                     case -1:
-                        setting.Avatar = GameObject.Find("Lune").GetComponent<VNectModel>();
+                        setting.Avatar = GameObject.Find("unitychan").GetComponent<VNectModel>();
                         break;
 
                     case -2:
@@ -438,7 +438,7 @@ public class UIScript : MonoBehaviour
     public void onSourceDevice()
     {
         barracudaRunner.PlayStop();
-
+        sourceDevice.value = 1;
         if (sourceDevice.value == 0)
         {
             var extensions = new[]
@@ -571,7 +571,6 @@ public class UIScript : MonoBehaviour
             //”ñ“¯Šúˆ—(Task)‚Å“Ç‚İ‚İ‚Ü‚·
             await context.LoadAsyncTask();
 
-            ///
             //“Ç‚ªŠ®—¹‚·‚é‚Æcontext.Root‚Éƒ‚ƒfƒ‹‚ÌGameObject‚ª“ü‚Á‚Ä‚¢‚Ü‚·
             var avatarObject = context.Root;
             avatarObject.name = setting.AvatarName;

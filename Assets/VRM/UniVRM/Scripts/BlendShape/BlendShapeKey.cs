@@ -1,34 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+
 
 namespace VRM
 {
     [Serializable]
     public struct BlendShapeKey : IEquatable<BlendShapeKey>, IComparable<BlendShapeKey>
     {
-        /// <summary>
-        /// Enum.ToString() のGC回避用キャッシュ
-        /// </summary>
-        private static readonly Dictionary<BlendShapePreset, string> m_presetNameDictionary =
-            new Dictionary<BlendShapePreset, string>();
-
-
-        /// <summary>
-        ///  BlendShapePresetと同名の名前を持つ独自に追加したBlendShapeを区別するためのprefix
-        /// </summary>
-        private static readonly string UnknownPresetPrefix = "Unknown_";
-
-        private string m_name;
-
-        public string Name
-        {
-            get { return m_name.ToUpper(); }
-        }
-
+        public string Name;
         public BlendShapePreset Preset;
 
         string m_id;
-
         string ID
         {
             get
@@ -37,56 +18,42 @@ namespace VRM
                 {
                     if (Preset != BlendShapePreset.Unknown)
                     {
-                        if (m_presetNameDictionary.ContainsKey(Preset))
-                        {
-                            m_id = m_presetNameDictionary[Preset];
-                        }
-                        else
-                        {
-                            m_presetNameDictionary.Add(Preset, Preset.ToString());
-                            m_id = m_presetNameDictionary[Preset];
-                        }
+                        m_id = Preset.ToString().ToUpper();
                     }
                     else
                     {
-                        m_id = UnknownPresetPrefix + m_name;
+                        m_id = Name;
                     }
                 }
-
                 return m_id;
             }
         }
 
-        public BlendShapeKey(BlendShapePreset preset) : this(preset.ToString(), preset)
+        public BlendShapeKey(string name) : this(name, BlendShapePreset.Unknown)
         {
         }
 
-        public BlendShapeKey(string name, BlendShapePreset preset = BlendShapePreset.Unknown)
+        public BlendShapeKey(BlendShapePreset preset) : this(preset.ToString(), BlendShapePreset.Unknown)
         {
-            m_name = name;
-            Preset = preset;
+        }
 
+        public BlendShapeKey(string name, BlendShapePreset preset)
+        {
+            Name = name.ToUpper();
+            Preset = preset;
             if (Preset != BlendShapePreset.Unknown)
             {
-                if (m_presetNameDictionary.ContainsKey((Preset)))
-                {
-                    m_id = m_presetNameDictionary[Preset];
-                }
-                else
-                {
-                    m_presetNameDictionary.Add(Preset, Preset.ToString());
-                    m_id = m_presetNameDictionary[Preset];
-                }
+                m_id = Preset.ToString().ToUpper();
             }
             else
             {
-                m_id = UnknownPresetPrefix + m_name;
+                m_id = Name;
             }
         }
 
         public override string ToString()
         {
-            return ID.Replace(UnknownPresetPrefix, "").ToUpper();
+            return ID;
         }
 
         public bool Equals(BlendShapeKey other)
@@ -98,7 +65,7 @@ namespace VRM
         {
             if (obj is BlendShapeKey)
             {
-                return Equals((BlendShapeKey) obj);
+                return Equals((BlendShapeKey)obj);
             }
             else
             {
@@ -117,7 +84,6 @@ namespace VRM
             {
                 return default(BlendShapeKey);
             }
-
             return new BlendShapeKey(clip.BlendShapeName, clip.Preset);
         }
 

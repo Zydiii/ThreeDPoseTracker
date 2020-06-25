@@ -8,17 +8,13 @@ namespace UniGLTF
 {
     public static class NodeImporter
     {
-        public static GameObject ImportNode(glTFNode node, int nodeIndex)
+        public static GameObject ImportNode(glTFNode node)
         {
             var nodeName = node.name;
             if (!string.IsNullOrEmpty(nodeName) && nodeName.Contains("/"))
             {
                 Debug.LogWarningFormat("node {0} contains /. replace _", node.name);
                 nodeName = nodeName.Replace("/", "_");
-            }
-            if(string.IsNullOrEmpty(nodeName))
-            {
-                nodeName = string.Format("nodeIndex_{0}", nodeIndex);
             }
             var go = new GameObject(nodeName);
 
@@ -78,7 +74,7 @@ namespace UniGLTF
             };
 
             //
-            // build hierarchy
+            // build hierachy
             //
             var node = context.GLTF.nodes[i];
             if (node.children != null)
@@ -168,7 +164,7 @@ namespace UniGLTF
 
                     if (x.SkinIndex.Value < context.GLTF.skins.Count)
                     {
-                        // calculate internal values(boundingBox etc...) when sharedMesh assigned ?
+                        // calculate internal values(boudingBox etc...) when sharedMesh assinged ?
                         skinnedMeshRenderer.sharedMesh = null;
 
                         var skin = context.GLTF.skins[x.SkinIndex.Value];

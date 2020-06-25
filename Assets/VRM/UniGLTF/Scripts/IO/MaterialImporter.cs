@@ -10,7 +10,7 @@ namespace UniGLTF
 {
     public interface IMaterialImporter
     {
-        Material CreateMaterial(int i, glTFMaterial src, bool hasVertexColor);
+        Material CreateMaterial(int i, glTFMaterial src);
     }
 
     public class MaterialImporter : IMaterialImporter
@@ -37,7 +37,7 @@ namespace UniGLTF
             Transparent
         }
 
-        /// StandardShader variables
+        /// StandardShader vaiables
         ///
         /// _Color
         /// _MainTex
@@ -64,13 +64,13 @@ namespace UniGLTF
         /// _SrcBlend
         /// _DstBlend
         /// _ZWrite
-        public virtual Material CreateMaterial(int i, glTFMaterial x, bool hasVertexColor)
+        public virtual Material CreateMaterial(int i, glTFMaterial x)
         {
             var shader = m_shaderStore.GetShader(x);
             //Debug.LogFormat("[{0}]{1}", i, shader.name);
             var material = new Material(shader);
 #if UNITY_EDITOR
-            // textureImporter.SaveAndReimport(); may destroy this material
+            // textureImporter.SaveAndReimport(); may destory this material
             material.hideFlags = HideFlags.DontUnloadUnusedAsset;
 #endif
 
@@ -102,7 +102,7 @@ namespace UniGLTF
                 if (x.pbrMetallicRoughness.baseColorFactor != null && x.pbrMetallicRoughness.baseColorFactor.Length == 4)
                 {
                     var color = x.pbrMetallicRoughness.baseColorFactor;
-                    material.color = (new Color(color[0], color[1], color[2], color[3])).gamma;
+                    material.color = new Color(color[0], color[1], color[2], color[3]);
                 }
 
                 //renderMode
@@ -134,12 +134,6 @@ namespace UniGLTF
                     UniUnlit.Utils.SetCullMode(material, UniUnlit.UniUnlitCullMode.Back);
                 }
 
-                // VColor
-                if (hasVertexColor)
-                {
-                    UniUnlit.Utils.SetVColBlendMode(material, UniUnlit.UniUnlitVertexColorBlendOp.Multiply);
-                }
-
                 UniUnlit.Utils.ValidateProperties(material, true);
 
                 return material;
@@ -151,7 +145,7 @@ namespace UniGLTF
                 if (x.pbrMetallicRoughness.baseColorFactor != null && x.pbrMetallicRoughness.baseColorFactor.Length == 4)
                 {
                     var color = x.pbrMetallicRoughness.baseColorFactor;
-                    material.color = (new Color(color[0], color[1], color[2], color[3])).gamma;
+                    material.color = new Color(color[0], color[1], color[2], color[3]);
                 }
 
                 if (x.pbrMetallicRoughness.baseColorTexture != null && x.pbrMetallicRoughness.baseColorTexture.index != -1)

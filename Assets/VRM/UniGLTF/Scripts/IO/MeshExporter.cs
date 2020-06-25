@@ -8,9 +8,7 @@ namespace UniGLTF
     public struct MeshWithRenderer
     {
         public Mesh Mesh;
-        [Obsolete("Use Renderer")]
-        public Renderer Rendererer { get { return Renderer; } set { Renderer = value; } }
-        public Renderer Renderer;
+        public Renderer Rendererer;
     }
 
     public static class MeshExporter
@@ -25,7 +23,7 @@ namespace UniGLTF
             gltf.accessors[positionAccessorIndex].min = positions.Aggregate(positions[0], (a, b) => new Vector3(Mathf.Min(a.x, b.x), Math.Min(a.y, b.y), Mathf.Min(a.z, b.z))).ToArray();
             gltf.accessors[positionAccessorIndex].max = positions.Aggregate(positions[0], (a, b) => new Vector3(Mathf.Max(a.x, b.x), Math.Max(a.y, b.y), Mathf.Max(a.z, b.z))).ToArray();
 
-            var normalAccessorIndex = gltf.ExtendBufferAndGetAccessorIndex(bufferIndex, mesh.normals.Select(y => y.normalized.ReverseZ()).ToArray(), glBufferTarget.ARRAY_BUFFER);
+            var normalAccessorIndex = gltf.ExtendBufferAndGetAccessorIndex(bufferIndex, mesh.normals.Select(y => y.ReverseZ()).ToArray(), glBufferTarget.ARRAY_BUFFER);
 #if GLTF_EXPORT_TANGENTS
             var tangentAccessorIndex = gltf.ExtendBufferAndGetAccessorIndex(bufferIndex, mesh.tangents.Select(y => y.ReverseZ()).ToArray(), glBufferTarget.ARRAY_BUFFER);
 #endif
@@ -83,7 +81,7 @@ namespace UniGLTF
                 {
                     attributes = attributes,
                     indices = indicesAccessorIndex,
-                    mode = 4, // triangles ?
+                    mode = 4, // triangels ?
                     material = unityMaterials.IndexOf(materials[j])
                 });
             }
@@ -106,15 +104,13 @@ namespace UniGLTF
 
         static gltfMorphTarget ExportMorphTarget(glTF gltf, int bufferIndex,
             Mesh mesh, int j,
-            bool useSparseAccessorForMorphTarget,
-            bool exportOnlyBlendShapePosition)
+            bool useSparseAccessorForMorphTarget)
         {
             var blendShapeVertices = mesh.vertices;
             var usePosition = blendShapeVertices != null && blendShapeVertices.Length > 0;
 
             var blendShapeNormals = mesh.normals;
             var useNormal = usePosition && blendShapeNormals != null && blendShapeNormals.Length == blendShapeVertices.Length;
-            // var useNormal = usePosition && blendShapeNormals != null && blendShapeNormals.Length == blendShapeVertices.Length && !exportOnlyBlendShapePosition;
 
             var blendShapeTangents = mesh.tangents.Select(y => (Vector3)y).ToArray();
             //var useTangent = usePosition && blendShapeTangents != null && blendShapeTangents.Length == blendShapeVertices.Length;
@@ -230,25 +226,23 @@ namespace UniGLTF
 
         public static void ExportMeshes(glTF gltf, int bufferIndex,
             List<MeshWithRenderer> unityMeshes, List<Material> unityMaterials,
-            bool useSparseAccessorForMorphTarget,
-            bool exportOnlyBlendShapePosition)
+            bool useSparseAccessorForMorphTarget)
         {
             for (int i = 0; i < unityMeshes.Count; ++i)
             {
                 var x = unityMeshes[i];
                 var mesh = x.Mesh;
-                var materials = x.Renderer.sharedMaterials;
+                var materials = x.Rendererer.sharedMaterials;
 
                 var gltfMesh = ExportPrimitives(gltf, bufferIndex,
-                    x.Renderer.name,
+                    x.Rendererer.name,
                     mesh, materials, unityMaterials);
 
                 for (int j = 0; j < mesh.blendShapeCount; ++j)
                 {
                     var morphTarget = ExportMorphTarget(gltf, bufferIndex,
                         mesh, j,
-                        useSparseAccessorForMorphTarget,
-                        exportOnlyBlendShapePosition);
+                        useSparseAccessorForMorphTarget);
 
                     //
                     // all primitive has same blendShape

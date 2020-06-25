@@ -15,7 +15,7 @@ namespace UniGLTF
 
     public interface IglTFTextureinfo
     {
-        glTFTextureTypes TextureType { get; }
+        glTFTextureTypes TextreType { get; }
     }
 
     [Serializable]
@@ -37,14 +37,14 @@ namespace UniGLTF
             f.KeyValue(() => texCoord);
         }
 
-        public abstract glTFTextureTypes TextureType { get; }
+        public abstract glTFTextureTypes TextreType { get; }
     }
 
 
     [Serializable]
     public class glTFMaterialBaseColorTextureInfo : glTFTextureInfo
     {
-        public override glTFTextureTypes TextureType
+        public override glTFTextureTypes TextreType
         {
             get { return glTFTextureTypes.BaseColor; }
         }
@@ -53,7 +53,7 @@ namespace UniGLTF
     [Serializable]
     public class glTFMaterialMetallicRoughnessTextureInfo : glTFTextureInfo
     {
-        public override glTFTextureTypes TextureType
+        public override glTFTextureTypes TextreType
         {
             get { return glTFTextureTypes.Metallic; }
         }
@@ -70,7 +70,7 @@ namespace UniGLTF
             base.SerializeMembers(f);
         }
 
-        public override glTFTextureTypes TextureType
+        public override glTFTextureTypes TextreType
         {
             get { return glTFTextureTypes.Normal; }
         }
@@ -88,7 +88,7 @@ namespace UniGLTF
             base.SerializeMembers(f);
         }
 
-        public override glTFTextureTypes TextureType
+        public override glTFTextureTypes TextreType
         {
             get { return glTFTextureTypes.Occlusion; }
         }
@@ -97,7 +97,7 @@ namespace UniGLTF
     [Serializable]
     public class glTFMaterialEmissiveTextureInfo : glTFTextureInfo
     {
-        public override glTFTextureTypes TextureType
+        public override glTFTextureTypes TextreType
         {
             get { return glTFTextureTypes.Emissive; }
         }

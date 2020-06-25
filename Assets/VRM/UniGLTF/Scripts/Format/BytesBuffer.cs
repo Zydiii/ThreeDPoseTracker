@@ -49,13 +49,7 @@ namespace UniGLTF
 
         const string DataPrefix3 = "data:image/jpeg;base64,";
 
-        [Obsolete("Use ReadEmbedded(uri)")]
         public static Byte[] ReadEmbeded(string uri)
-        {
-            return ReadEmbedded(uri);
-        }
-
-        public static Byte[] ReadEmbedded(string uri)
         {
             var pos = uri.IndexOf(";base64,");
             if (pos < 0)
@@ -70,7 +64,7 @@ namespace UniGLTF
 
         Byte[] ReadFromUri(string baseDir, string uri)
         {
-            var bytes = ReadEmbedded(uri);
+            var bytes = ReadEmbeded(uri);
             if (bytes != null)
             {
                 return bytes;

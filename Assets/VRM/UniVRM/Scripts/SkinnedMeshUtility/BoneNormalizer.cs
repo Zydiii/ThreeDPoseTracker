@@ -322,14 +322,7 @@ namespace VRM
             var mesh = srcMesh.Copy(false);
             mesh.name = srcMesh.name + ".baked";
             srcRenderer.BakeMesh(mesh);
-           
-            var blendShapeValues = new Dictionary<int,float>();
-            for (int i = 0; i < srcMesh.blendShapeCount; i++)
-            {
-                var val = srcRenderer.GetBlendShapeWeight(i);
-                if (val > 0) blendShapeValues.Add(i, val);
-            }
-        
+
             mesh.boneWeights = MapBoneWeight(srcMesh.boneWeights, boneMap, srcRenderer.bones, dstBones); // restore weights. clear when BakeMesh
 
             // recalc bindposes
@@ -378,14 +371,11 @@ namespace VRM
                 srcRenderer.BakeMesh(blendShapeMesh);
                 if (blendShapeMesh.vertices.Length != mesh.vertices.Length)
                 {
-                    throw new Exception("different vertex count");
+                    throw new Exception("diffrent vertex count");
                 }
-
-                var value = blendShapeValues.ContainsKey(i) ? blendShapeValues[i] : 0;
-                srcRenderer.SetBlendShapeWeight(i, value);
+                srcRenderer.SetBlendShapeWeight(i, 0);
 
                 Vector3[] vertices = blendShapeMesh.vertices;
-                
                 for (int j = 0; j < vertices.Length; ++j)
                 {
                     if (originalBlendShapePositions[j] == Vector3.zero)
@@ -404,7 +394,6 @@ namespace VRM
                     if (originalBlendShapeNormals[j] == Vector3.zero)
                     {
                         normals[j] = Vector3.zero;
-                        
                     }
                     else
                     {

@@ -93,7 +93,7 @@ namespace UniHumanoid
             var nameProp = property.FindPropertyRelative("Name");
             var valueProp = property.FindPropertyRelative("Value");
             /*
-            var label = string.Format("{0}: {1}", 
+            var labl = string.Format("{0}: {1}", 
                 nameProp.stringValue, 
                 valueProp.floatValue
                 );

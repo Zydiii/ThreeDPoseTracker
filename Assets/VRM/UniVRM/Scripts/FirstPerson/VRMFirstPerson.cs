@@ -66,7 +66,7 @@ namespace VRM
         public void CopyTo(GameObject _dst, Dictionary<Transform, Transform> map)
         {
             var dst = _dst.AddComponent<VRMFirstPerson>();
-            dst.FirstPersonBone = map[FirstPersonBone];
+            dst.FirstPersonBone = FirstPersonBone;
             dst.FirstPersonOffset = FirstPersonOffset;
             dst.Renderers = Renderers.Select(x =>
             {
@@ -91,7 +91,6 @@ namespace VRM
 
         private void Reset()
         {
-            SetDefault();
             TraverseRenderers();
         }
 

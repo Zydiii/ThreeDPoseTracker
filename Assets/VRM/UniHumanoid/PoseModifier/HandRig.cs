@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 
 namespace UniHumanoid
@@ -13,16 +12,14 @@ namespace UniHumanoid
             get { return m_animator; }
         }
 
-        [FormerlySerializedAs("LeftStrech")]
         [SerializeField, Range(-1, 1)]
-        public float LeftStretch;
+        public float LeftStrech;
 
         [SerializeField, Range(-1, 1)]
         public float LeftSpread;
 
-        [FormerlySerializedAs("RightStrech")]
         [SerializeField, Range(-1, 1)]
-        public float RightStretch;
+        public float RightStrech;
 
         [SerializeField, Range(-1, 1)]
         public float RightSpread;
@@ -70,26 +67,26 @@ namespace UniHumanoid
 
         private void Update()
         {
-            m_leftHand.ThumbStretch = LeftStretch;
+            m_leftHand.ThumbStrech = LeftStrech;
             m_leftHand.ThumbSpread = LeftSpread;
-            m_leftHand.IndexStretch = LeftStretch;
+            m_leftHand.IndexStrech = LeftStrech;
             m_leftHand.IndexSpread = LeftSpread;
-            m_leftHand.MiddleStretch = LeftStretch;
+            m_leftHand.MiddleStrech = LeftStrech;
             m_leftHand.MiddleSpread = LeftSpread;
-            m_leftHand.RingStretch = LeftStretch;
+            m_leftHand.RingStrech = LeftStrech;
             m_leftHand.RingSpread = LeftSpread;
-            m_leftHand.LittleStretch = LeftStretch;
+            m_leftHand.LittleStrech = LeftStrech;
             m_leftHand.LittleSpread = LeftSpread;
 
-            m_rightHand.ThumbStretch = RightStretch;
+            m_rightHand.ThumbStrech = RightStrech;
             m_rightHand.ThumbSpread = RightSpread;
-            m_rightHand.IndexStretch = RightStretch;
+            m_rightHand.IndexStrech = RightStrech;
             m_rightHand.IndexSpread = RightSpread;
-            m_rightHand.MiddleStretch = RightStretch;
+            m_rightHand.MiddleStrech = RightStrech;
             m_rightHand.MiddleSpread = RightSpread;
-            m_rightHand.RingStretch = RightStretch;
+            m_rightHand.RingStrech = RightStrech;
             m_rightHand.RingSpread = RightSpread;
-            m_rightHand.LittleStretch = RightStretch;
+            m_rightHand.LittleStrech = RightStrech;
             m_rightHand.LittleSpread = RightSpread;
 
             m_updater.LeftHandPose = m_leftHand;

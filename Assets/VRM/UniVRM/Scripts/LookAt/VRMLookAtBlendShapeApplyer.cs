@@ -29,12 +29,12 @@ namespace VRM
         }
 
         VRMLookAtHead m_head;
-        VRMBlendShapeProxy m_proxy;
+        VRMBlendShapeProxy m_propxy;
 
         private void Start()
         {
             m_head = GetComponent<VRMLookAtHead>();
-            m_proxy = GetComponent<VRMBlendShapeProxy>();
+            m_propxy = GetComponent<VRMBlendShapeProxy>();
             if (m_head == null)
             {
                 enabled = false;
@@ -49,27 +49,27 @@ namespace VRM
             if (yaw < 0)
             {
                 // Left
-                m_proxy.SetValue(BlendShapePreset.LookRight, 0, !m_notSetValueApply); // clear first
-                m_proxy.SetValue(BlendShapePreset.LookLeft, Mathf.Clamp(Horizontal.Map(-yaw), 0, 1.0f), !m_notSetValueApply);
+                m_propxy.SetValue(BlendShapePreset.LookRight, 0, !m_notSetValueApply); // clear first
+                m_propxy.SetValue(BlendShapePreset.LookLeft, Mathf.Clamp(Horizontal.Map(-yaw), 0, 1.0f), !m_notSetValueApply);
             }
             else
             {
                 // Right
-                m_proxy.SetValue(BlendShapePreset.LookLeft, 0, !m_notSetValueApply); // clear first
-                m_proxy.SetValue(BlendShapePreset.LookRight, Mathf.Clamp(Horizontal.Map(yaw), 0, 1.0f), !m_notSetValueApply);
+                m_propxy.SetValue(BlendShapePreset.LookLeft, 0, !m_notSetValueApply); // clear first
+                m_propxy.SetValue(BlendShapePreset.LookRight, Mathf.Clamp(Horizontal.Map(yaw), 0, 1.0f), !m_notSetValueApply);
             }
 
             if (pitch < 0)
             {
                 // Down
-                m_proxy.SetValue(BlendShapePreset.LookUp, 0, !m_notSetValueApply); // clear first
-                m_proxy.SetValue(BlendShapePreset.LookDown, Mathf.Clamp(VerticalDown.Map(-pitch), 0, 1.0f), !m_notSetValueApply);
+                m_propxy.SetValue(BlendShapePreset.LookUp, 0, !m_notSetValueApply); // clear first
+                m_propxy.SetValue(BlendShapePreset.LookDown, Mathf.Clamp(VerticalDown.Map(-pitch), 0, 1.0f), !m_notSetValueApply);
             }
             else
             {
                 // Up
-                m_proxy.SetValue(BlendShapePreset.LookDown, 0, !m_notSetValueApply); // clear first
-                m_proxy.SetValue(BlendShapePreset.LookUp, Mathf.Clamp(VerticalUp.Map(pitch), 0, 1.0f), !m_notSetValueApply);
+                m_propxy.SetValue(BlendShapePreset.LookDown, 0, !m_notSetValueApply); // clear first
+                m_propxy.SetValue(BlendShapePreset.LookUp, Mathf.Clamp(VerticalUp.Map(pitch), 0, 1.0f), !m_notSetValueApply);
             }
 #pragma warning restore 0618
         }

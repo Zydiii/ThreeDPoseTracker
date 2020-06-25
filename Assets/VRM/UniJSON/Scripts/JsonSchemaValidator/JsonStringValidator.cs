@@ -98,7 +98,7 @@ namespace UniJSON
             return false;
         }
 
-        public void ToJsonSchema(IFormatter f)
+        public void ToJsonScheama(IFormatter f)
         {
             f.Key("type"); f.Value("string");
         }

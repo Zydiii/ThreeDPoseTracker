@@ -189,9 +189,9 @@ namespace UniGLTF
         {
             var current = self;
 
-            var split = path.Split('/');
+            var splited = path.Split('/');
 
-            foreach (var childName in split)
+            foreach (var childName in splited)
             {
                 current = current.GetChildByName(childName);
             }
@@ -219,13 +219,7 @@ namespace UniGLTF
             }
         }
 
-        [Obsolete("Use FindDescendant(name)")]
         public static Transform FindDescenedant(this Transform t, string name)
-        {
-            return FindDescendant(t, name);
-        }
-
-        public static Transform FindDescendant(this Transform t, string name)
         {
             return t.Traverse().First(x => x.name == name);
         }

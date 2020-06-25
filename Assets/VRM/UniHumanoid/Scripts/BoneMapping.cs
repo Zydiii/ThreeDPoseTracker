@@ -51,8 +51,8 @@ namespace UniHumanoid
                 return;
             }
 
-            var estimator = new BvhSkeletonEstimator();
-            var skeleton = estimator.Detect(hips.transform);
+            var estimater = new BvhSkeletonEstimator();
+            var skeleton = estimater.Detect(hips.transform);
             var bones = hips.transform.Traverse().ToArray();
             for (int i = 0; i < (int)HumanBodyBones.LastBone; ++i)
             {

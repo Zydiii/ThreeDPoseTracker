@@ -156,7 +156,7 @@ namespace UniJSON
 
             if (MaxItems.HasValue && count > MaxItems.Value)
             {
-                return new JsonSchemaValidationException(context, "maxItems");
+                return new JsonSchemaValidationException(context, "maxOtems");
             }
 
             if (MinItems.HasValue && count < MinItems.Value)
@@ -280,7 +280,7 @@ namespace UniJSON
             GenericSerializer<T>.Serialize(Items.Validator, f, c, o);
         }
 
-        public void ToJsonSchema(IFormatter f)
+        public void ToJsonScheama(IFormatter f)
         {
             f.Key("type"); f.Value("array");
 

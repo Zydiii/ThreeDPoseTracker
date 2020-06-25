@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 
@@ -13,14 +12,7 @@ namespace UniJSON
             return self.Children;
         }
 
-        [Obsolete("Use GetArrayItem(index)")]
-        public static ListTreeNode<T> GetArrrayItem<T>(this ListTreeNode<T> self, int index)
-            where T : IListTreeItem, IValue<T>
-        {
-            return GetArrayItem(self, index);
-        }
-
-        public static ListTreeNode<T> GetArrayItem<T>(this ListTreeNode<T> self, int index)
+        public static ListTreeNode<T> GetArrrayItem<T>(this ListTreeNode<T> self, int index) 
             where T : IListTreeItem, IValue<T>
         {
             int i = 0;

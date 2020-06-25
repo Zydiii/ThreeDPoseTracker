@@ -73,7 +73,7 @@ namespace UniJSON
                                 break;
 
                             default:
-                                // unknown escape
+                                // unkonw escape
                                 throw new ParserException("unknown escape: " + p.Second);
                         }
                     }
@@ -84,13 +84,13 @@ namespace UniJSON
             return false;
         }
 
-        public static IEnumerable<Utf8String> Split(this Utf8String src, byte delimiter)
+        public static IEnumerable<Utf8String> Split(this Utf8String src, byte delemeter)
         {
             var start = 0;
             var p = new Utf8Iterator(src.Bytes);
             while (p.MoveNext())
             {
-                if (p.Current == delimiter)
+                if (p.Current == delemeter)
                 {
                     if (p.BytePosition - start == 0)
                     {

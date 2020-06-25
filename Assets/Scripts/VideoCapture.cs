@@ -129,7 +129,7 @@ public class VideoCapture : MonoBehaviour
             sd.sizeDelta = new Vector2(videoScreenWidth, (int)(videoScreenWidth * 1080 / 1920));
         }
         VideoScreen.texture = videoTexture;
-        VideoScreen.transform.localScale = localScale;
+        VideoScreen.transform.localScale = Vector3.zero;
 
         VideoPlayer.Play();
 

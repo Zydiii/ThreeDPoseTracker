@@ -60,12 +60,6 @@ namespace UniGLTF
             set;
         }
 
-        public bool ExportOnlyBlendShapePosition
-        {
-            get;
-            set;
-        }
-
         public GameObject Copy
         {
             get;
@@ -176,11 +170,11 @@ namespace UniGLTF
                     node.mesh = renderers.IndexOf(meshRenderer);
                 }
 
-                var skinnedMeshRenderer = x.GetComponent<SkinnedMeshRenderer>();
-                if (skinnedMeshRenderer != null)
+                var skinnredMeshRenderer = x.GetComponent<SkinnedMeshRenderer>();
+                if (skinnredMeshRenderer != null)
                 {
-                    node.mesh = renderers.IndexOf(skinnedMeshRenderer);
-                    node.skin = skins.IndexOf(skinnedMeshRenderer);
+                    node.mesh = renderers.IndexOf(skinnredMeshRenderer);
+                    node.skin = skins.IndexOf(skinnredMeshRenderer);
                 }
             }
 
@@ -229,7 +223,7 @@ namespace UniGLTF
                     .Select(x => new MeshWithRenderer
                     {
                         Mesh = x.GetSharedMesh(),
-                        Renderer = x.GetComponent<Renderer>(),
+                        Rendererer = x.GetComponent<Renderer>(),
                     })
                     .Where(x =>
                     {
@@ -237,8 +231,8 @@ namespace UniGLTF
                         {
                             return false;
                         }
-                        if (x.Renderer.sharedMaterials == null
-                        || x.Renderer.sharedMaterials.Length == 0)
+                        if (x.Rendererer.sharedMaterials == null
+                        || x.Rendererer.sharedMaterials.Length == 0)
                         {
                             return false;
                         }
@@ -246,7 +240,7 @@ namespace UniGLTF
                         return true;
                     })
                     .ToList();
-                MeshExporter.ExportMeshes(gltf, bufferIndex, unityMeshes, Materials, useSparseAccessorForMorphTarget, ExportOnlyBlendShapePosition);
+                MeshExporter.ExportMeshes(gltf, bufferIndex, unityMeshes, Materials, useSparseAccessorForMorphTarget);
                 Meshes = unityMeshes.Select(x => x.Mesh).ToList();
                 #endregion
 
@@ -257,7 +251,7 @@ namespace UniGLTF
                         && x.bones != null
                         && x.bones.Length > 0)
                     .ToList();
-                gltf.nodes = Nodes.Select(x => ExportNode(x, Nodes, unityMeshes.Select(y => y.Renderer).ToList(), unitySkins)).ToList();
+                gltf.nodes = Nodes.Select(x => ExportNode(x, Nodes, unityMeshes.Select(y => y.Rendererer).ToList(), unitySkins)).ToList();
                 gltf.scenes = new List<gltfScene>
                 {
                     new gltfScene

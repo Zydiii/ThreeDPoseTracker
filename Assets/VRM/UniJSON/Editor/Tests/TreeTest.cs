@@ -39,7 +39,7 @@ namespace GenericTree
         where T : ITreeItem
     {
         /// <summary>
-        /// Whole tree nodes
+        /// Whole tree ndoes
         /// </summary>
         public readonly List<T> Values;
 
